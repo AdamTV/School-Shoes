@@ -7,19 +7,11 @@
 
 using namespace std;
 
+//CHANGE GLOBAL VARIABLES TO PARSED STRINGS WITHIN FUNCTION
 string names[] = { ".*Arzach.*",".*Axel.*", ".*Billy.*",".*Charly.*",".*Elliot.*",
 ".*Elise.*",".*Emie.*",".*Emma.*",".*Enzo.*",".*Julia.*",".*Justin.*",".*Katia.*",".*Lou.*",".*Lucas.*",
 ".*Manu.*",".*Nelly.*",".*Oxford.*",".*Rose.*",".*Rose Junior.*", ".*Sasha.*",".*Savage.*",".*Shadow.*",
 ".*Tess.*",".*Tom.*",".*Zoe.*",".*Zoe Junior.*" };
-
-//void findAndReplace(string& line,const char* name, int size, int sizeMatch, string inventory, string updatedInv) {
-//	string s = "(.*)" + (string)name + "(.*)";
-//	regex a (s);
-//	regex i (inventory);
-//	if (regex_match(line, a) && size == sizeMatch)
-//		line = regex_replace(line, i, updatedInv);
-//}
-
 
 string find(ifstream& fs, string nameAndSize) {
 	string inventory = "A";
@@ -82,8 +74,7 @@ void replace(fstream& f) {
 	}
 }
 
-
-int main() {
+void updateInventory() {
 	string line = "Handle,Title,Option1 Name,Option1 Value,Option2 Name,Option2 Value,Option3 Name,Option3 Value,SKU,\"Blainville, Quebec\",";
 	ofstream o("newInv.csv");
 	o << line << endl;
@@ -91,5 +82,9 @@ int main() {
 	while (f) {
 		replace(f);
 	}
+}
+
+int main() {
+	updateInventory();
 	return 0;
 }
