@@ -15,9 +15,12 @@ string find(ifstream& fs, string nameAndSize) {
 
 	if (regex_match(line, a)) {
 		//FIND INVENTORY IN NEW FILE
-		regex endLine(".*,");
-		line = regex_replace(line, endLine, "");
-		inventory = regex_replace(line, endLine, "");
+		line.resize(line.size() - 1);
+		auto const pos = line.find_last_of(',');
+		inventory = line.substr(pos+1);
+		//regex endLine(".*,");
+		//line = regex_replace(line, endLine, "");
+		//inventory = regex_replace(line, endLine, "");
 	}
 
 	return inventory;
