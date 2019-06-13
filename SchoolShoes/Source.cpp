@@ -28,9 +28,9 @@ string find(ifstream& fs, string nameAndSize) {
 	getline(fs, line, '\n');
 		if (regex_match(line, a)) {
 			//FIND INVENTORY IN NEW FILE
-			size_t pos = line.length();
-			pos -= 2;
-			inventory = line.substr(pos,1);
+			regex endLine(".*,");
+			line = regex_replace(line, endLine, "");
+			inventory = regex_replace(line, endLine, "");
 		}
 	return inventory;
 }
@@ -44,7 +44,7 @@ void replace(fstream& f) {
 	string size;
 	bool notR = true;
 	getline(f, line, '\n');
-	for (int i = 0; i < 26 && notR; i++) {
+	for (int i = 0; i < 25 && notR; i++) {
 		regex a(names[i]);
 		if (regex_match(line, a)) {
 			notR = false;
@@ -64,9 +64,17 @@ void replace(fstream& f) {
 			while (fs) {
 				updatedInv = find(fs, nameAndSize);
 				if (updatedInv != "A") {
-					regex endLine(".*$");
-					line = regex_replace(line, endLine, updatedInv);
+					while (line[(line.length() - 1)] != ',') {
+						if (line[(line.length() - 1)] == '1' || line[(line.length() - 1)] == '2' || line[(line.length() - 1)] == '3' 
+							|| line[(line.length() - 1)] == '4' || line[(line.length() - 1)] == '5' || line[(line.length() - 1)] == '6' 
+							|| line[(line.length() - 1)] == '7' || line[(line.length() - 1)] == '8' || line[(line.length() - 1)] == '9' 
+							|| line[(line.length() - 1)] == '0' || line[(line.length() - 1)] == '-')
+							line.resize(line.length() - 1);
+					}
+					line += updatedInv;
+					ofstream o("newInv.csv",fstream::app);
 					cout << line << endl;
+					o << line << endl;
 					break;
 				}
 			}
@@ -76,22 +84,12 @@ void replace(fstream& f) {
 
 
 int main() {
-	string line = "I am Arzach. Find me. Replace 0 with 1";
-	const char* name = { "Arzach" };
-
-	int size = 0;
-	int sizeMatch = 0;
-	string inventory = "0";
-	string updatedInv = "1";
-	ofstream f("inventory_export.csv");
-	f << "HI\n";
-	regex a(".*");
-	//getline(f, line, '\n');
-	line = regex_replace(line, a, "HI");
-	f << "HI";
-	cout << line;
-	/*while (f) {
+	string line = "Handle,Title,Option1 Name,Option1 Value,Option2 Name,Option2 Value,Option3 Name,Option3 Value,SKU,\"Blainville, Quebec\",";
+	ofstream o("newInv.csv");
+	o << line << endl;
+	fstream f("inventory_export.csv");
+	while (f) {
 		replace(f);
-	}*/
+	}
 	return 0;
 }
