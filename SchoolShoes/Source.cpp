@@ -4,6 +4,7 @@
 #include <string>
 #include <iterator>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -71,7 +72,7 @@ void replace(fstream& f) {
 			}
 			line += updatedInv;
 			ofstream o("newInv.csv", fstream::app);
-			cout << line << endl;
+			cout << name << ": " << size << " updated!\n";
 			o << line << endl;
 			break;
 		}
@@ -90,5 +91,6 @@ void updateInventory() {
 
 int main() {
 	updateInventory();
+	cout << "Inventory Updated!";
 	return 0;
 }
